@@ -34,3 +34,4 @@ build/
 
 # Exclure les fichiers d'environnement
 .env
+privateConfig.env
