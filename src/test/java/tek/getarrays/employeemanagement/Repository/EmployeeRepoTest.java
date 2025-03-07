@@ -3,7 +3,8 @@ package tek.getarrays.employeemanagement.Repository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import tek.getarrays.employeemanagement.Entity.Employee;
+import tek.getarrays.employeemanagement.employee.Entity.Employee;
+import tek.getarrays.employeemanagement.employee.Repository.EmployeeRepo;
 
 import java.util.List;
 import java.util.Optional;

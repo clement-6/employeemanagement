@@ -1,7 +1,16 @@
 
+app:
+  secret-key: f07b43c9839bbc0a50fead3d59780566b421376dd760f38a1c8956b3dd0e4129
+  expiration-time: 90000
+
 server:
   port: 8090
+  servlet:
+    context-path: /employee
+
 spring:
+  main:
+    allow-circular-references: true
   jpa:
     database: postgresql
     show-sql: true
@@ -15,6 +24,8 @@ spring:
           lob:
             non_contextual_creation: true
         format_sql: true
+
+
   datasource:
     driver-class-name: ${DATABASE_DRIVER}
     url: ${DATABASE_URL}

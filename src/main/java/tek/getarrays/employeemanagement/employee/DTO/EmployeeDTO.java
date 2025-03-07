@@ -1,4 +1,4 @@
-package tek.getarrays.employeemanagement.DTO;
+package tek.getarrays.employeemanagement.employee.DTO;
 
 import lombok.Data;
 

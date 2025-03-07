@@ -1,18 +1,19 @@
-package tek.getarrays.employeemanagement.Controller;
+package tek.getarrays.employeemanagement.employee.Controller;
+
 
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tek.getarrays.employeemanagement.DTO.EmployeeDTO;
-import tek.getarrays.employeemanagement.Entity.Employee;
-import tek.getarrays.employeemanagement.Services.service.EmployeeService;
+import tek.getarrays.employeemanagement.employee.DTO.EmployeeDTO;
+import tek.getarrays.employeemanagement.employee.Entity.Employee;
+import tek.getarrays.employeemanagement.employee.Services.service.EmployeeService;
+
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/employee")

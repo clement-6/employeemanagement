@@ -1,12 +1,13 @@
-package tek.getarrays.employeemanagement.Services.service;
+package tek.getarrays.employeemanagement.employee.Services.service;
 
-import tek.getarrays.employeemanagement.DTO.EmployeeDTO;
-import tek.getarrays.employeemanagement.Entity.Employee;
+
+import tek.getarrays.employeemanagement.employee.DTO.EmployeeDTO;
+import tek.getarrays.employeemanagement.employee.Entity.Employee;
+
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface EmployeeService {
 
