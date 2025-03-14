@@ -1,4 +1,4 @@
-package tek.getarrays.employeemanagement.security.service.implement;
+package tek.getarrays.employeemanagement.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import tek.getarrays.employeemanagement.security.entity.User;
-import tek.getarrays.employeemanagement.security.repository.UserRepository;
+import tek.getarrays.employeemanagement.entity.User;
+import tek.getarrays.employeemanagement.repository.UserRepository;
 
 import java.util.Collections;
 

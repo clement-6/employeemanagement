@@ -1,8 +1,8 @@
-package tek.getarrays.employeemanagement.employee.Services.service;
+package tek.getarrays.employeemanagement.services;
 
 
-import tek.getarrays.employeemanagement.employee.DTO.EmployeeDTO;
-import tek.getarrays.employeemanagement.employee.Entity.Employee;
+import tek.getarrays.employeemanagement.dto.EmployeeDTO;
+import tek.getarrays.employeemanagement.entity.Employee;
 
 
 import javax.servlet.http.HttpServletResponse;

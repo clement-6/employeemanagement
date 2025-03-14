@@ -1,4 +1,4 @@
-package tek.getarrays.employeemanagement.security.configuration;
+package tek.getarrays.employeemanagement.security.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

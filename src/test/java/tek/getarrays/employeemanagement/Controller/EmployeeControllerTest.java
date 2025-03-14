@@ -7,10 +7,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import tek.getarrays.employeemanagement.employee.Controller.EmployeeController;
-import tek.getarrays.employeemanagement.employee.DTO.EmployeeDTO;
-import tek.getarrays.employeemanagement.employee.Entity.Employee;
-import tek.getarrays.employeemanagement.employee.Services.service.EmployeeService;
+import tek.getarrays.employeemanagement.controller.EmployeeController;
+import tek.getarrays.employeemanagement.dto.EmployeeDTO;
+import tek.getarrays.employeemanagement.entity.Employee;
+import tek.getarrays.employeemanagement.services.EmployeeService;
 
 import java.util.List;
 import java.util.UUID;

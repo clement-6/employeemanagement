@@ -1,27 +1,20 @@
-package tek.getarrays.employeemanagement.security.service.implement;
+package tek.getarrays.employeemanagement.services;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import tek.getarrays.employeemanagement.Exception.ApiRequestException;
-import tek.getarrays.employeemanagement.security.configuration.JwtUtils;
-import tek.getarrays.employeemanagement.security.dto.UserDto;
-import tek.getarrays.employeemanagement.security.entity.User;
-import tek.getarrays.employeemanagement.security.repository.UserRepository;
+import tek.getarrays.employeemanagement.Exception.BadRequestException;
+import tek.getarrays.employeemanagement.Exception.UnAuthorizedException;
+import tek.getarrays.employeemanagement.repository.UserRepository;
+import tek.getarrays.employeemanagement.security.config.JwtUtils;
+import tek.getarrays.employeemanagement.dto.UserDto;
+import tek.getarrays.employeemanagement.entity.User;
 import tek.getarrays.employeemanagement.security.response.AuthResponse;
-import tek.getarrays.employeemanagement.security.service.UserService;
-
-
-
 
 
 @Service
@@ -38,8 +31,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public User registerUser(UserDto userDto){
         User user =  new User();
+        if (userDto.getUserName().isEmpty() || userDto.getEmail().isEmpty() || userDto.getPassword().isEmpty()){
+            throw new BadRequestException("userName/Email/Password is required");
+        }
         user.setUserName(userDto.getUserName());
+        user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (!userDto.getPassWordConfirm().equals(userDto.getPassword())){
+            throw new BadRequestException("vos mots de passe ne coresponde pas");
+        }
         user.setRole(userDto.getRole());
         return userRepo.save(user);
     }
@@ -51,6 +51,6 @@ public class UserServiceImpl implements UserService {
              String token = jwtUtils.generateToken(userDto.getUserName());
              return new AuthResponse(token,"Authentification reussie");
          }
-       throw new ApiRequestException("vous n'etes pas autorisez");
+       throw  new UnAuthorizedException("vous n'etes pas sutoriser");
     }
 }

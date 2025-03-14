@@ -1,4 +1,4 @@
-package tek.getarrays.employeemanagement.employee.Services.Implements;
+package tek.getarrays.employeemanagement.services;
 
 
 import lombok.AllArgsConstructor;
@@ -6,11 +6,11 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
-import tek.getarrays.employeemanagement.employee.DTO.EmployeeDTO;
-import tek.getarrays.employeemanagement.employee.Entity.Employee;
-import tek.getarrays.employeemanagement.Exception.ApiRequestException;
-import tek.getarrays.employeemanagement.employee.Repository.EmployeeRepo;
-import tek.getarrays.employeemanagement.employee.Services.service.EmployeeService;
+import tek.getarrays.employeemanagement.Exception.NotFoundException;
+import tek.getarrays.employeemanagement.dto.EmployeeDTO;
+import tek.getarrays.employeemanagement.entity.Employee;
+import tek.getarrays.employeemanagement.Exception.BadRequestException;
+import tek.getarrays.employeemanagement.repository.EmployeeRepo;
 
 
 import javax.servlet.ServletOutputStream;
@@ -26,11 +26,17 @@ public class EmployeeImpl implements EmployeeService {
     private final EmployeeRepo employeeRepo;
 
     private Employee findEmployee(long id){
-        return employeeRepo.findById(id).orElseThrow(()-> new ApiRequestException("Employee with ID"+ id + "not found"));
+        return employeeRepo.findById(id).orElseThrow(()-> new NotFoundException("Employee with ID"+ id + "not found"));
     }
 
     private void getEmployee(Employee employee, EmployeeDTO employeeDTO){
+        if (employeeRepo.existsByEmail(employeeDTO.getEmail())){
+            throw new BadRequestException("l'email existe deja");
+        }
         employee.setName(employeeDTO.getName());
+        if (employeeDTO.getName().isEmpty()){
+            throw new BadRequestException("name is required");
+        }
         employee.setEmail(employeeDTO.getEmail());
         employee.setJobTitle(employeeDTO.getJobTitle());
         employee.setPhone(employeeDTO.getPhone());
@@ -57,7 +63,7 @@ public class EmployeeImpl implements EmployeeService {
     @Override
     public void delete(long id) {
         if (!employeeRepo.existsById(id)){
-            throw new ApiRequestException("Employee with ID"+ id + "not found");
+            throw new NotFoundException("Employee with ID"+ id + "not found");
         }
         employeeRepo.deleteById(id);
     }

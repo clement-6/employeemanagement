@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import tek.getarrays.employeemanagement.employee.DTO.EmployeeDTO;
-import tek.getarrays.employeemanagement.employee.Entity.Employee;
-import tek.getarrays.employeemanagement.Exception.ApiRequestException;
-import tek.getarrays.employeemanagement.employee.Repository.EmployeeRepo;
-import tek.getarrays.employeemanagement.employee.Services.Implements.EmployeeImpl;
+import tek.getarrays.employeemanagement.dto.EmployeeDTO;
+import tek.getarrays.employeemanagement.entity.Employee;
+import tek.getarrays.employeemanagement.Exception.BadRequestException;
+import tek.getarrays.employeemanagement.repository.EmployeeRepo;
+import tek.getarrays.employeemanagement.services.EmployeeImpl;
 
 
 import javax.servlet.ServletOutputStream;
@@ -157,7 +157,7 @@ class EmployeeImplTest {
         when(employeeRepo.existsById(1L)).thenReturn(false);
 
         // Vérifier que l'exception est levée
-        assertThrows(ApiRequestException.class, () -> employee.delete(1L));
+        assertThrows(BadRequestException.class, () -> employee.delete(1L));
 
         // Vérifier que `deleteById` n'est jamais appelé
         verify(employeeRepo, never()).deleteById(1L);

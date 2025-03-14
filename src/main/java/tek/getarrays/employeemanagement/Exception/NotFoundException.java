@@ -2,10 +2,9 @@ package tek.getarrays.employeemanagement.Exception;
 
 import org.springframework.http.HttpStatus;
 
-public class UserNotFoundException extends GeneralException{
+public class NotFoundException extends GeneralException{
 
-    public UserNotFoundException(String message){
+    public NotFoundException(String message) {
         super(message, HttpStatus.NOT_FOUND);
     }
-
 }

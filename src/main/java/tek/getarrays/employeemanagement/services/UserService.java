@@ -1,7 +1,7 @@
-package tek.getarrays.employeemanagement.security.service;
+package tek.getarrays.employeemanagement.services;
 
-import tek.getarrays.employeemanagement.security.dto.UserDto;
-import tek.getarrays.employeemanagement.security.entity.User;
+import tek.getarrays.employeemanagement.dto.UserDto;
+import tek.getarrays.employeemanagement.entity.User;
 import tek.getarrays.employeemanagement.security.response.AuthResponse;
 
 public interface UserService {
