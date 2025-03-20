@@ -6,24 +6,28 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tek.getarrays.employeemanagement.Exception.NotFoundException;
 import tek.getarrays.employeemanagement.dto.EmployeeDTO;
 import tek.getarrays.employeemanagement.entity.Employee;
 import tek.getarrays.employeemanagement.Exception.BadRequestException;
-import tek.getarrays.employeemanagement.repository.EmployeeRepo;
 
+import tek.getarrays.employeemanagement.repository.EmployeeRepo;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class EmployeeImpl implements EmployeeService {
 
     private final EmployeeRepo employeeRepo;
+
+
 
     private Employee findEmployee(long id){
         return employeeRepo.findById(id).orElseThrow(()-> new NotFoundException("Employee with ID"+ id + "not found"));
@@ -34,30 +38,34 @@ public class EmployeeImpl implements EmployeeService {
             throw new BadRequestException("l'email existe deja");
         }
         employee.setName(employeeDTO.getName());
-        if (employeeDTO.getName().isEmpty()){
+        if (!StringUtils.hasText(employeeDTO.getName())){
             throw new BadRequestException("name is required");
         }
         employee.setEmail(employeeDTO.getEmail());
+        if (!StringUtils.hasText(employeeDTO.getEmail())){
+            throw new BadRequestException("Email is required");
+        }
         employee.setJobTitle(employeeDTO.getJobTitle());
         employee.setPhone(employeeDTO.getPhone());
         employee.setAddress(employeeDTO.getAddress());
-        employee.setImageUrl(employeeDTO.getImageUrl());
     }
 
     @Override
-    public Employee add(EmployeeDTO employeeDTO) {
+    public EmployeeDTO add(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         getEmployee(employee,employeeDTO);
-        employee.setCodeEmployee(UUID.randomUUID().toString());
-        return employeeRepo.save(employee);
+        employee.setMatriculEmployee(UUID.randomUUID().toString());
+        employeeRepo.save(employee);
+        return mapToDTO(employee);
     }
 
     @Override
-    public Employee up(EmployeeDTO employeeDTO, long id) {
+    public EmployeeDTO up(EmployeeDTO employeeDTO, long id) {
         Employee employee = findEmployee(id);
         getEmployee(employee,employeeDTO);
-        employee.setCodeEmployee(employee.getCodeEmployee());
-        return employeeRepo.save(employee);
+        employee.setMatriculEmployee(employee.getMatriculEmployee());
+        employeeRepo.save(employee);
+        return mapToDTO(employee);
     }
 
     @Override
@@ -69,10 +77,36 @@ public class EmployeeImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> listEmployee() {return employeeRepo.findAll();}
+    public List<EmployeeDTO> listEmployee() {
+        List<Employee> employeeList = employeeRepo.findAll();
+        return employeeList.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
 
     @Override
-    public Employee employeeById(long id) {return findEmployee(id);}
+    public List<EmployeeDTO> listEmployeeByJob(String jobTitle) {
+        List<Employee> employeeList = employeeRepo.findByJobTitle(jobTitle);
+        return employeeList.stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public EmployeeDTO employeeById(long id) {
+        Employee employee = findEmployee(id);
+        return mapToDTO(employee);
+    }
+
+    private EmployeeDTO mapToDTO(Employee employee){
+        EmployeeDTO dto = new EmployeeDTO();
+        dto.setId(employee.getId());
+        dto.setName(employee.getName());
+        dto.setEmail(employee.getEmail());
+        dto.setJobTitle(employee.getJobTitle());
+        dto.setPhone(employee.getPhone());
+        dto.setAddress(employee.getAddress());
+        dto.setMatriculEmployee(employee.getMatriculEmployee());
+        dto.setCreateDate(employee.getCreateDate());
+        dto.setUpdateDate(employee.getUpdateDate());
+        return  dto;
+    }
 
     @Override
     public void generateExcel(HttpServletResponse response) throws IOException {
@@ -89,20 +123,19 @@ public class EmployeeImpl implements EmployeeService {
         row.createCell(3).setCellValue("Telephone");
         row.createCell(4).setCellValue("adresse");
         row.createCell(5).setCellValue("email");
-        row.createCell(6).setCellValue("Url");
+
 
 
         int dataRowIndex = 1;
 
         for(Employee emp : employee){
             HSSFRow dataRow = sheet.createRow(dataRowIndex);
-            dataRow.createCell(0).setCellValue(emp.getCodeEmployee());
+            dataRow.createCell(0).setCellValue(emp.getMatriculEmployee());
             dataRow.createCell(1).setCellValue(emp.getName());
             dataRow.createCell(2).setCellValue(emp.getJobTitle());
             dataRow.createCell(3).setCellValue(emp.getPhone());
             dataRow.createCell(4).setCellValue(emp.getAddress());
             dataRow.createCell(5).setCellValue(emp.getEmail());
-            dataRow.createCell(6).setCellValue(emp.getImageUrl());
             dataRowIndex++;
         }
         ServletOutputStream ops = response.getOutputStream();

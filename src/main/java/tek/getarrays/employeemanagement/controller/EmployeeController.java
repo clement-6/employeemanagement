@@ -13,6 +13,7 @@ import tek.getarrays.employeemanagement.services.EmployeeService;
 
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,27 +25,28 @@ public class EmployeeController {
     private final EmployeeService empService;
 
     @ApiOperation(value = "delete employee by id")
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable long id){empService.delete(id);}
 
     @ApiOperation(value = "get all employee")
     @GetMapping("/list")
-    public List<Employee> employeeByList(){return empService.listEmployee();}
+    public List<EmployeeDTO> employeeByList(){return empService.listEmployee();}
+    @ApiOperation(value = "get all employee by title job")
+    @GetMapping("/list/JobTitle")
+    public List<EmployeeDTO> employeeByJobTitle(@RequestParam String jobTitle){return empService.listEmployeeByJob(jobTitle);}
 
     @ApiOperation(value = "get a specific employee")
-    @GetMapping("By/{id}")
-    public Employee employeeById(@PathVariable long id){
-        return empService.employeeById(id);
-    }
+    @GetMapping("/by/{id}")
+    public ResponseEntity<EmployeeDTO> employeeById(@PathVariable long id){return new ResponseEntity<>(empService.employeeById(id),HttpStatus.OK);}
 
     @ApiOperation(value = "add employee")
     @PostMapping("/add")
-    public ResponseEntity<Employee> add(@RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<EmployeeDTO> add(@Valid @RequestBody EmployeeDTO employeeDTO){
         return new ResponseEntity<>(empService.add(employeeDTO), HttpStatus.CREATED);
     }
     @ApiOperation(value = "update employee")
     @PutMapping("/up/employeeId/{id}")
-    public ResponseEntity<Employee> update(@RequestBody EmployeeDTO employeeDTO, @PathVariable long id){
+    public ResponseEntity<EmployeeDTO> update(@Valid @RequestBody EmployeeDTO employeeDTO, @PathVariable long id){
         return new ResponseEntity<>(empService.up(employeeDTO,id), HttpStatus.CREATED);
     }
     @ApiOperation(value = "generate document excel for all employee")

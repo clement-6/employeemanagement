@@ -15,6 +15,7 @@
     <description>employeemanagement</description>
     <properties>
         <java.version>17</java.version>
+
     </properties>
     <dependencies>
         <dependency>
@@ -106,6 +107,8 @@
 
 
 
+
+
     </dependencies>
 
     <build>
@@ -122,6 +125,7 @@
                     </excludes>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>

@@ -9,5 +9,6 @@ public interface UserService {
 
     User registerUser(UserDto userDto);
 
-    AuthResponse login(UserDto userDto);
+    void changePassword(long id, String oldPassword, String newPassword);
+
 }

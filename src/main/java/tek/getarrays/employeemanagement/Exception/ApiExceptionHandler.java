@@ -1,6 +1,5 @@
 package tek.getarrays.employeemanagement.Exception;
 
-import io.swagger.models.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

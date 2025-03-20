@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tek.getarrays.employeemanagement.dto.UserDto;
 import tek.getarrays.employeemanagement.entity.User;
 import tek.getarrays.employeemanagement.security.response.AuthResponse;
+import tek.getarrays.employeemanagement.services.JwtService;
 import tek.getarrays.employeemanagement.services.UserService;
 
 
@@ -20,18 +21,16 @@ import tek.getarrays.employeemanagement.services.UserService;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final JwtService service;
 
-    @ApiOperation(value = "Register a user")
-    @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserDto userDto){
-        return new ResponseEntity<>(userService.registerUser(userDto), HttpStatus.CREATED);
-    }
+
     @ApiOperation(value = "Authenticate a user")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody UserDto userDto){
-        return new ResponseEntity<>(userService.login(userDto),HttpStatus.CREATED);
+        return new ResponseEntity<>(service.login(userDto),HttpStatus.CREATED);
     }
+
+
 
 
 

@@ -51,10 +51,11 @@ public class Employee implements Serializable {
     private String imageUrl;
 
     @Column(nullable = false, updatable = false)
-    private String codeEmployee;
+    private String matriculEmployee;
 
     @CreationTimestamp
     @JsonFormat(pattern = "dd-MM-yyy")
+    @Column(updatable = false)
     private Date createDate;
 
     @UpdateTimestamp

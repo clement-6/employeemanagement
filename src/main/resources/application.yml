@@ -6,7 +6,7 @@ app:
 server:
   port: 8090
   servlet:
-    context-path: /employee
+    context-path: /management
 
 spring:
   main:
