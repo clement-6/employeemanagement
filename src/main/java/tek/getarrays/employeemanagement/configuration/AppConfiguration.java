@@ -1,5 +1,6 @@
 package tek.getarrays.employeemanagement.configuration;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -16,5 +17,8 @@ public class AppConfiguration {
         configurer.setLocation(new FileSystemResource("privateConfig.env"));
         return configurer;
     }
+
+    @Bean
+    public ModelMapper modelMapper(){return new ModelMapper();}
 
 }

@@ -9,6 +9,8 @@ public interface UserService {
 
     User registerUser(UserDto userDto);
 
+
+
     void changePassword(long id, String oldPassword, String newPassword);
 
 }

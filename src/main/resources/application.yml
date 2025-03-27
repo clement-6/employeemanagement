@@ -1,7 +1,7 @@
 
 app:
   secret-key: f07b43c9839bbc0a50fead3d59780566b421376dd760f38a1c8956b3dd0e4129
-  expiration-time: 90000
+  expiration-time: 3600000
 
 server:
   port: 8090
@@ -9,6 +9,9 @@ server:
     context-path: /management
 
 spring:
+  sql:
+    init:
+      mode: always
   main:
     allow-circular-references: true
   jpa:
@@ -19,12 +22,12 @@ spring:
     generate-ddl: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
         jdbc:
           lob:
             non_contextual_creation: true
         format_sql: true
-
+    defer-datasource-initialization: true
 
   datasource:
     driver-class-name: ${DATABASE_DRIVER}

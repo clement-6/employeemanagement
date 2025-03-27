@@ -7,6 +7,7 @@ import com.sun.istack.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import tek.getarrays.employeemanagement.utils.ErrorMessages;
 
 
 import javax.persistence.*;
@@ -16,6 +17,8 @@ import javax.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.sql.Date;
+
+import static tek.getarrays.employeemanagement.utils.ErrorMessages.*;
 
 @Entity
 @Getter
@@ -27,16 +30,16 @@ public class Employee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
-    private Long id;
+    private long id;
 
-    @NotBlank(message = "le nom ne doit pas etre vide")
+    @NotBlank(message = NAME_REQUIRED)
     @Size(max = 250)
     @Column(nullable = false)
     private String name;
 
     @Column(unique = true, nullable = false)
-    @Email(message = "l'email doit etre valide")
-    @NotBlank
+    @Email(message = EMAIL_VALID)
+    @NotBlank(message = EMAIL_REQUIRED)
     private String email;
 
     @Size(max = 200)
@@ -48,7 +51,7 @@ public class Employee implements Serializable {
     @Size(max = 255)
     private String address;
 
-    private String imageUrl;
+
 
     @Column(nullable = false, updatable = false)
     private String matriculEmployee;

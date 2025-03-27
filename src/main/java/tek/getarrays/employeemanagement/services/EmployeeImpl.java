@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import tek.getarrays.employeemanagement.Exception.NotFoundException;
 import tek.getarrays.employeemanagement.dto.EmployeeDTO;
+import tek.getarrays.employeemanagement.dto.EmployeeResponseDto;
+import tek.getarrays.employeemanagement.dto.EmployeeUpdateDto;
 import tek.getarrays.employeemanagement.entity.Employee;
 import tek.getarrays.employeemanagement.Exception.BadRequestException;
 
@@ -21,11 +23,15 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static tek.getarrays.employeemanagement.utils.ErrorMessages.USER_EMAIL_EXIST;
+
 @Service
 @AllArgsConstructor
 public class EmployeeImpl implements EmployeeService {
 
     private final EmployeeRepo employeeRepo;
+
+    private final ModelMapper modelMapper;
 
 
 
@@ -33,39 +39,30 @@ public class EmployeeImpl implements EmployeeService {
         return employeeRepo.findById(id).orElseThrow(()-> new NotFoundException("Employee with ID"+ id + "not found"));
     }
 
-    private void getEmployee(Employee employee, EmployeeDTO employeeDTO){
+    private void checkEmployeeByEmail(EmployeeDTO employeeDTO){
         if (employeeRepo.existsByEmail(employeeDTO.getEmail())){
-            throw new BadRequestException("l'email existe deja");
+            throw new BadRequestException(USER_EMAIL_EXIST);
         }
-        employee.setName(employeeDTO.getName());
-        if (!StringUtils.hasText(employeeDTO.getName())){
-            throw new BadRequestException("name is required");
-        }
-        employee.setEmail(employeeDTO.getEmail());
-        if (!StringUtils.hasText(employeeDTO.getEmail())){
-            throw new BadRequestException("Email is required");
-        }
-        employee.setJobTitle(employeeDTO.getJobTitle());
-        employee.setPhone(employeeDTO.getPhone());
-        employee.setAddress(employeeDTO.getAddress());
     }
 
+
     @Override
-    public EmployeeDTO add(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        getEmployee(employee,employeeDTO);
+    public EmployeeResponseDto add(EmployeeDTO employeeDTO) {
+        Employee employee = modelMapper.map(employeeDTO, Employee.class);
+        checkEmployeeByEmail(employeeDTO);
         employee.setMatriculEmployee(UUID.randomUUID().toString());
         employeeRepo.save(employee);
-        return mapToDTO(employee);
+        return modelMapper.map(employee, EmployeeResponseDto.class);
     }
 
     @Override
-    public EmployeeDTO up(EmployeeDTO employeeDTO, long id) {
+    public EmployeeResponseDto up(EmployeeUpdateDto employeeDTO, long id) {
         Employee employee = findEmployee(id);
-        getEmployee(employee,employeeDTO);
-        employee.setMatriculEmployee(employee.getMatriculEmployee());
+        modelMapper.getConfiguration().setSkipNullEnabled(true);
+        modelMapper.map(employeeDTO, employee);
+        employee.setId(id);
         employeeRepo.save(employee);
-        return mapToDTO(employee);
+        return modelMapper.map(employee, EmployeeResponseDto.class);
     }
 
     @Override
@@ -77,35 +74,21 @@ public class EmployeeImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeDTO> listEmployee() {
+    public List<EmployeeResponseDto> listEmployee() {
         List<Employee> employeeList = employeeRepo.findAll();
-        return employeeList.stream().map(this::mapToDTO).collect(Collectors.toList());
+        return employeeList.stream().map(list -> modelMapper.map(list, EmployeeResponseDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public List<EmployeeDTO> listEmployeeByJob(String jobTitle) {
+    public List<EmployeeResponseDto> listEmployeeByJob(String jobTitle) {
         List<Employee> employeeList = employeeRepo.findByJobTitle(jobTitle);
-        return employeeList.stream().map(this::mapToDTO).collect(Collectors.toList());
+        return employeeList.stream().map(list -> modelMapper.map(list, EmployeeResponseDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public EmployeeDTO employeeById(long id) {
+    public EmployeeResponseDto employeeById(long id) {
         Employee employee = findEmployee(id);
-        return mapToDTO(employee);
-    }
-
-    private EmployeeDTO mapToDTO(Employee employee){
-        EmployeeDTO dto = new EmployeeDTO();
-        dto.setId(employee.getId());
-        dto.setName(employee.getName());
-        dto.setEmail(employee.getEmail());
-        dto.setJobTitle(employee.getJobTitle());
-        dto.setPhone(employee.getPhone());
-        dto.setAddress(employee.getAddress());
-        dto.setMatriculEmployee(employee.getMatriculEmployee());
-        dto.setCreateDate(employee.getCreateDate());
-        dto.setUpdateDate(employee.getUpdateDate());
-        return  dto;
+        return modelMapper.map(employee, EmployeeResponseDto.class);
     }
 
     @Override

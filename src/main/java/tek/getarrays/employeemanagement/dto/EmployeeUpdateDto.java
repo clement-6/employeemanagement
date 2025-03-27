@@ -1,10 +1,7 @@
 package tek.getarrays.employeemanagement.dto;
 
-
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,11 +10,9 @@ import javax.validation.constraints.Size;
 import static tek.getarrays.employeemanagement.utils.ErrorMessages.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class EmployeeDTO {
+public class EmployeeUpdateDto {
 
-    private Long id;
+    private long id;
 
     @ApiModelProperty(required = true)
     @NotBlank(message = NAME_REQUIRED)
@@ -37,7 +32,5 @@ public class EmployeeDTO {
 
     @Size(max = 255)
     private String address;
-
-    private String  matriculEmployee;
 
 }

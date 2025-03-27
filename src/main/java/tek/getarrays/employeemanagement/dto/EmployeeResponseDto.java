@@ -1,23 +1,20 @@
 package tek.getarrays.employeemanagement.dto;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.sql.Date;
 
 import static tek.getarrays.employeemanagement.utils.ErrorMessages.*;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class EmployeeDTO {
+public class EmployeeResponseDto {
 
-    private Long id;
+    private long id;
 
     @ApiModelProperty(required = true)
     @NotBlank(message = NAME_REQUIRED)
@@ -40,4 +37,9 @@ public class EmployeeDTO {
 
     private String  matriculEmployee;
 
+    @JsonFormat(pattern = "dd-MM-yyy")
+    private Date createDate;
+
+    @JsonFormat(pattern = "dd-MM-yyy")
+    private Date updateDate;
 }

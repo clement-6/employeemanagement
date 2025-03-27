@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tek.getarrays.employeemanagement.dto.EmployeeDTO;
-import tek.getarrays.employeemanagement.entity.Employee;
+import tek.getarrays.employeemanagement.dto.EmployeeResponseDto;
+import tek.getarrays.employeemanagement.dto.EmployeeUpdateDto;
 import tek.getarrays.employeemanagement.services.EmployeeService;
 
 
@@ -30,23 +31,23 @@ public class EmployeeController {
 
     @ApiOperation(value = "get all employee")
     @GetMapping("/list")
-    public List<EmployeeDTO> employeeByList(){return empService.listEmployee();}
+    public List<EmployeeResponseDto> employeeByList(){return empService.listEmployee();}
     @ApiOperation(value = "get all employee by title job")
     @GetMapping("/list/JobTitle")
-    public List<EmployeeDTO> employeeByJobTitle(@RequestParam String jobTitle){return empService.listEmployeeByJob(jobTitle);}
+    public List<EmployeeResponseDto> employeeByJobTitle(@RequestParam String jobTitle){return empService.listEmployeeByJob(jobTitle);}
 
     @ApiOperation(value = "get a specific employee")
     @GetMapping("/by/{id}")
-    public ResponseEntity<EmployeeDTO> employeeById(@PathVariable long id){return new ResponseEntity<>(empService.employeeById(id),HttpStatus.OK);}
+    public ResponseEntity<EmployeeResponseDto> employeeById(@PathVariable long id){return new ResponseEntity<>(empService.employeeById(id),HttpStatus.OK);}
 
     @ApiOperation(value = "add employee")
     @PostMapping("/add")
-    public ResponseEntity<EmployeeDTO> add(@Valid @RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<EmployeeResponseDto> add(@Valid @RequestBody EmployeeDTO employeeDTO){
         return new ResponseEntity<>(empService.add(employeeDTO), HttpStatus.CREATED);
     }
     @ApiOperation(value = "update employee")
     @PutMapping("/up/employeeId/{id}")
-    public ResponseEntity<EmployeeDTO> update(@Valid @RequestBody EmployeeDTO employeeDTO, @PathVariable long id){
+    public ResponseEntity<EmployeeResponseDto> update(@Valid @RequestBody EmployeeUpdateDto employeeDTO, @PathVariable long id){
         return new ResponseEntity<>(empService.up(employeeDTO,id), HttpStatus.CREATED);
     }
     @ApiOperation(value = "generate document excel for all employee")

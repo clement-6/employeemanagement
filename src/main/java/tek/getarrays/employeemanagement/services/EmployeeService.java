@@ -2,23 +2,24 @@ package tek.getarrays.employeemanagement.services;
 
 
 import tek.getarrays.employeemanagement.dto.EmployeeDTO;
-import tek.getarrays.employeemanagement.entity.Employee;
+import tek.getarrays.employeemanagement.dto.EmployeeResponseDto;
+import tek.getarrays.employeemanagement.dto.EmployeeUpdateDto;
+
 
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface EmployeeService {
 
-    EmployeeDTO add(EmployeeDTO employeeDTO);
-    EmployeeDTO up(EmployeeDTO employeeDTO, long id);
+    EmployeeResponseDto add(EmployeeDTO employeeDTO);
+    EmployeeResponseDto up(EmployeeUpdateDto employeeDTO, long id);
     void delete(long id);
-    List<EmployeeDTO> listEmployee();
+    List<EmployeeResponseDto> listEmployee();
 
-    List<EmployeeDTO> listEmployeeByJob(String jobTitle);
-    EmployeeDTO employeeById(long id);
+    List<EmployeeResponseDto> listEmployeeByJob(String jobTitle);
+    EmployeeResponseDto employeeById(long id);
 
     void generateExcel(HttpServletResponse response) throws IOException;
 }
