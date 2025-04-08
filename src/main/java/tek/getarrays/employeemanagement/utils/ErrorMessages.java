@@ -9,7 +9,11 @@ public class ErrorMessages {
     public static final String USER_EMAIL_EXIST = "l'Email existe deja'";
     public static final String USER_NOT_FOUND = "user not found with username: ";
     public static final String ROLE_NOT_FOUND = "Role non trouve: ";
-
+    public static  final String TOKEN_EXPIRE = "Token expire";
+    public static  final String TOKEN_INVALID = "Token invalid";
+    public static final String DISABLE_USER = "Le compte est descative";
+    public static final String FAILED_CONNEXION = "Identifiant ou mot de passe incorrect";
+    public static final String USER_CONNECT = "Identifiant ou mot de passe incorrect";
 
 
 }

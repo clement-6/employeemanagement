@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tek.getarrays.employeemanagement.Enum.UserStatus;
 import tek.getarrays.employeemanagement.Exception.BadRequestException;
 import tek.getarrays.employeemanagement.Exception.UserNotFoundException;
 import tek.getarrays.employeemanagement.entity.Role;
@@ -18,6 +19,7 @@ import tek.getarrays.employeemanagement.entity.User;
 import java.util.HashSet;
 import java.util.Set;
 
+import static tek.getarrays.employeemanagement.Enum.UserStatus.ACTIVE;
 import static tek.getarrays.employeemanagement.utils.ErrorMessages.PASSWORDS_DONT_MATCH;
 import static tek.getarrays.employeemanagement.utils.ErrorMessages.ROLE_NOT_FOUND;
 
@@ -50,6 +52,7 @@ public class UserServiceImpl implements UserService {
             roles.add(role);
         }
         user.setRoles(roles);
+        user.setUserStatus(ACTIVE);
         validatePassword(userDto);
         return userRepo.save(user);
     }
